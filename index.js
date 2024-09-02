@@ -54,6 +54,11 @@ async function run() {
     const enrolledCollection = database.collection("enrolled");
     const appliedCollection = database.collection("applied");
 
+    // Root route
+    app.get("/", (req, res) => {
+      res.send("Level 2 student, BH.Sadhin");
+    });
+
     // Generate JWT token for a user
     app.post("/api/set-token", async (req, res) => {
       const user = req.body;
@@ -377,6 +382,14 @@ async function run() {
       };
       const result = await usersCollection.updateOne(filter, updatedDoc);
       res.send(result);
+    });
+
+    // Handle not found route
+    app.use((req, res) => {
+      res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
     });
 
     console.log("Connected to MongoDB!");
